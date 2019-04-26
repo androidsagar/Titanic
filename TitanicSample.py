@@ -14,31 +14,29 @@ from sklearn.linear_model import LinearRegression
 
 df = pd.read_csv('/home/agl-android/.ML/Titanic/data/train.csv')
 
-x = df[['PassengerId','Pclass','Sex','Age','SibSp','Parch']].values
+x = df[['Pclass','Sex','Age','SibSp','Parch']].values
 y = df[['Survived']].values
 
 imputer = SimpleImputer(strategy="mean")
-x[:, 3:4] = imputer.fit_transform(x[:, 3:4]).astype(dtype= int)
+x[:, 2:3] = imputer.fit_transform(x[:, 2:3]).astype(dtype= int)
 
 labelEncoder_X = LabelEncoder()
-x[:, 2] = labelEncoder_X.fit_transform(x[:, 2])
+x[:, 1] = labelEncoder_X.fit_transform(x[:, 2])
 
 dfTest = pd.read_csv('/home/agl-android/.ML/Titanic/data/test.csv')
-xTest =  dfTest[['PassengerId','Pclass','Sex','Age','SibSp','Parch']].values
+xTest =  dfTest[['Pclass','Sex','Age','SibSp','Parch']].values
 
 imputerTest = SimpleImputer(strategy="mean")
-xTest[:, 3:4] = imputerTest.fit_transform(xTest[:, 3:4]).astype(dtype= int)
+xTest[:, 2:3] = imputerTest.fit_transform(xTest[:, 2:3]).astype(dtype= int)
 
 labelEncoder_XTest = LabelEncoder()
-xTest[:, 2] = labelEncoder_XTest.fit_transform(xTest[:, 2])
+xTest[:, 1] = labelEncoder_XTest.fit_transform(xTest[:, 1])
 
 regr = LinearRegression()
 regr = regr.fit(x,y)
-yPridict = regr.predict(xTest).astype(dtype = int)
+yPridict = regr.predict(xTest)
 
 out = pd.DataFrame()
-out['PassengerId'] = xTest[:,0]
+out['PassengerId'] = dfTest['PassengerId'].values
 out['Survived'] = yPridict
 
-from sklearn.metrics import accuracy_score
-accuracy = accuracy_score(yPridict, y)
