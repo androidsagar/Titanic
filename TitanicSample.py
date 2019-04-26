@@ -25,6 +25,7 @@ x[:, 1] = labelEncoder_X.fit_transform(x[:, 2])
 
 dfTest = pd.read_csv('/home/agl-android/.ML/Titanic/data/test.csv')
 xTest =  dfTest[['Pclass','Sex','Age','SibSp','Parch']].values
+yTest = dfTest['Survived'].values
 
 imputerTest = SimpleImputer(strategy="mean")
 xTest[:, 2:3] = imputerTest.fit_transform(xTest[:, 2:3]).astype(dtype= int)
@@ -32,9 +33,12 @@ xTest[:, 2:3] = imputerTest.fit_transform(xTest[:, 2:3]).astype(dtype= int)
 labelEncoder_XTest = LabelEncoder()
 xTest[:, 1] = labelEncoder_XTest.fit_transform(xTest[:, 1])
 
-regr = LinearRegression()
-regr = regr.fit(x,y)
-yPridict = regr.predict(xTest)
+
+#from sklearn import tree
+#clf = tree.DecisionTreeClassifier(max_depth=5)
+#clf.fit(X_train,y_train)
+#clf.score(X_test,y_test)
+#clf.feature_importances_
 
 out = pd.DataFrame()
 out['PassengerId'] = dfTest['PassengerId'].values
